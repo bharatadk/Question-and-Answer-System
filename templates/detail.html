@@ -1,0 +1,165 @@
+{% extends "base.html" %} {% load static %} {% load humanize %} {% block start %}
+<!-- Search Section -->
+<div class="container custom-container custom-blur" style="height: calc(100vh - 10vh);" >
+    <h2 class="my-4">{{quest.title}}</h2>
+    <p>
+        <span class="my-4">{{quest.add_time|date:'d/m/Y'}}</span>
+        <a href="#">{{quest.user.username}}</a>
+    </p>
+    <hr />
+
+    {% for answer in answers %}
+    <div class="row">
+        <div class="col-1" style="text-align: center;">
+            <div class="upvote">
+                <strong class="upvote-count-{{answer.id}}">{{answer.upvote_set.count}}</strong><br />
+                <span class="text-success">
+                    <i class="fa fa-arrow-up fa-2x upvote-click" data-answer="{{answer.id}}"></i>
+                </span>
+            </div>
+            <div class="downvote mt-3">
+                <span class="text-danger"> <i class="fa fa-arrow-down fa-2x downvote-click" data-answer="{{answer.id}}"></i> </span><br />
+                <strong class="downvote-count-{{answer.id}}">{{answer.downvote_set.count}}</strong>
+            </div>
+        </div>
+        <div class="col-11">
+            <p>
+                <strong class="my-4">Answered </strong> by <a href="#" class="mr-3">{{answer.user.username}}</a>
+            </p>
+            <div class="custom-blur" style="background-color:rgba(211, 158, 0,0.2);min-height:100px;padding:10px;margin-top:10px;margin-bottom:10px;margin-rignt:200px;">
+            <p>{{ answer.detail }}</p>
+            </div>
+            <p>
+                <span class="mr-3"><span class="comment-count-{{answer.id}}">{{answer.comment_set.count}}</span> replies</span>
+                <span class="mr-3">{{answer.add_time|date:'d/m/Y h:i:s'}}</span>
+            </p>
+            <!-- Comment Section Start -->
+
+            <div class="comment-wrapper-{{answer.id}}" style="background-color:rgba(0,0,0,0);">
+                {% for comment in answer.comment_set.all %}
+                <div class="card mb-2 ml-5" style="background:rgba(39, 151, 245, 0.2);border-radius:20px;backdrop-filter:blur(20px);">
+                    <div class="card-body" style="background-color:rgba(0,0,0,0);padding:0.5rem;">
+                        <p>{{comment.comment}}</p>
+                        <p><strong class="my-4">Replied </strong> by <a href="#">{{comment.user.username}}</a>    </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% if user.is_authenticated %}
+            <!-- Comment Form -->
+            <div class="card my-3">
+                <h6 class="card-header">Add Reply</h6>
+                <div class="card-body">
+                    <textarea class="form-control comment-text-{{answer.id}}"></textarea>
+                    <button type="button" data-answer="{{answer.id}}" class="btn btn-dark my-3 save-comment">
+                        Reply
+                    </button>   </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <hr />
+    {% endfor %} {% if user.is_authenticated %} {% for msg in messages %}
+    <p class="text-success">{{msg}}</p>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="custom-box-answer">
+        <div style="width:100%">
+        <h5> Write Your Answer Here </h5>
+            {{answerform.as_table}}
+        </div>
+        <div>
+             <button type="submit" class="btn custom-button">   Submit Answer  </button>
+	</div>
+	</div>
+    </form> 
+    {% endif %}
+</div>
+<script src="{% static '/js/jquery-3.5.1.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $(".save-comment").on("click", function () {
+            var _answerid = $(this).data("answer");
+            var _comment = $(".comment-text-" + _answerid).val();
+            // Ajax
+            $.ajax({
+                url: "/save-comment",
+                type: "post",
+                data: {
+                    comment: _comment,
+                    answerid: _answerid,
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                },
+                dataType: "json",
+                beforeSend: function () {
+                    $(".save-comment").addClass("disabled").text("saving...");
+                },
+                success: function (res) {
+                    if (res.bool == true) {
+                        $(".comment-text-" + _answerid).val("");
+                        // Append Element
+                        var _html =
+                            '<div style="background:rgba(39, 151, 245, 0.2);border-radius:20px;" class="card mb-2 ml-5 animate__animated animate__bounce">\
+                        <div class="card-body" style="background-color:rgba(0,0,0,0);padding:0.5rem;">\
+                            <p>' +
+                            _comment +
+                            '</p>\
+                            <p>\
+                                <span>Replied by </span><a href="#">{{request.user}}</a>\
+                            </p>\
+                        </div>\
+                    </div>';
+                        $(".comment-wrapper-" + _answerid).append(_html);
+                        var prevCount = $(".comment-count-" + _answerid).text();
+                        $(".comment-count-" + _answerid).text(parseInt(prevCount) + 1);
+                    }
+                    $(".save-comment").removeClass("disabled").text("Submit");
+                },
+            });
+        });
+
+        // Upvote
+        $(".upvote-click").on("click", function () {
+            var answerid = $(this).data("answer");
+            // Ajax
+            $.ajax({
+                url: "/save-upvote",
+                type: "post",
+                data: {
+                    answerid: answerid,
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                },
+                dataType: "json",
+                success: function (res) {
+                    var _prevupvote = $(".upvote-count-" + answerid).text();
+                    if (res.bool == true) {
+                        $(".upvote-count-" + answerid).text(parseInt(_prevupvote) + 1);
+                    }
+                },
+            });
+        });
+
+        // Downvote
+        $(".downvote-click").on("click", function () {
+            var answerid = $(this).data("answer");
+            // Ajax
+            $.ajax({
+                url: "/save-downvote",
+                type: "post",
+                data: {
+                    answerid: answerid,
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                },
+                dataType: "json",
+                success: function (res) {
+                    var _prevupvote = $(".downvote-count-" + answerid).text();
+                    if (res.bool == true) {
+                        $(".downvote-count-" + answerid).text(parseInt(_prevupvote) + 1);
+                    }
+                },
+            });
+        });
+    });
+</script>
+{% endblock %}

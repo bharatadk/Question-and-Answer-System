@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block start %}
+<div class="custom-box">
+<div class="custom-blur custom-inner-box" >
+    <form action="/live" method="post">
+        {% csrf_token %}
+        <div>
+            <label for="textField1">Enter First Sentence :</label>
+         </div>
+          <div class="form-group">
+            <textarea type="text" name="textField1" class="form-control">{{q1}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="textField2">Enter Second Sentence :</label>
+            <textarea type="text" name="textField2" class="form-control">{{q2}}</textarea>
+        </div>
+        <div><button type="submit" class="btn btn-primary custom-button" >Submit</button></div>
+    </form>
+    <br />
+
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+
+        <span class="{{ message.tags }}">{{ message }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block title %}Ask Question{% endblock %} {% block start %}
+<div class="container">
+    <div class="card mt-5 custom-blur">
+        <h5 class="card-header" style="text-align: center;">Ask Your Question</h5>
+        <div class="card-body">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+
+                <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-md-12">
+                    <input type="text" class="form-control" placeholder="Enter question" name="title" />
+                </div>
+                <div>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary custom-button">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

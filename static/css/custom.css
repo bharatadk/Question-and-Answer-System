@@ -1,0 +1,123 @@
+
+.custom-blur{
+	border-radius: 1em;
+ 	background-color: rgba(255, 255, 255, 0.5);
+	backdrop-filter:blur(40px);
+	box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+.custom-blur-ai{
+	border-radius: 1em;
+ 	background-color: rgba(40, 237, 22, 0.22);
+	backdrop-filter:blur(80px);
+	box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+
+.bgs-inactive{
+	border-radius: 20px;
+	margin:5px;
+	font-weight:bold;
+	color:rgb(112 78 112)!important;
+}
+.bgs-active{
+	background-color:rgb(157 95 158)!important;
+	color:rgba(255,255,255,1.0)!important;
+
+}
+
+.custom-container{
+  height: calc(100vh - 20vh);
+  overflow: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top:10px;
+}
+
+.custom-box{
+display: flex;
+flex-direction:row;
+align-items: center;
+justify-content: center;
+
+}
+.custom-inner-box{
+margin: 8vh;
+padding: 20px;
+min-width:80%;
+max-width: 960px;
+display: flex;
+flex-direction:column;
+text-align: center;
+
+
+}
+
+.custom-button{
+margin:5px;
+width:200px;
+height:50px;
+border:none;
+border-radius:20px;
+background-color: rgb(157 95 158);
+border-color:rgb(157 95 158);
+color:white;
+font-weight:bold;
+}
+.custom-button:hover{
+box-shadow:10px 15px 20px 10px rgba(0, 0, 0, 0.5);
+color:white;
+background-color:rgb(157 95 158);
+}
+
+.custom-item-navbar{
+color:rgb(157 95 158);
+}
+
+.custom-item-navbar:hover {
+  background-color: rgb(208 168 209);
+}
+
+.custom-box-input-field{
+    padding-left: 10px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    }
+
+.custom-input-field-g{
+    width: 100%;
+    display: block;
+    border: 2px;
+    border-radius:20px;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 10px 15px 10px 10px;
+    background:rgba(255,255,255,0.7);
+}
+
+.custom-box-answer{
+display: flex;
+flex-direction:column;
+align-items: center;
+justify-content: center;
+
+}
+
+
+#id_detail{
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+
+.custom-card-body{
+background:rgba(255,255,255,0.0);
+}
+.custom-reply-field{
+margin-left:70px;
+}
+

@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block start %}
+
+     <!-- Question List from -- pred -->   
+
+<div class="container custom-container" >
+    <div><h1> You have  :</h1></div>
+    {% for quest in quests %}
+    <div class="card mb-4 custom-blur-ai" style="margin-top: 0px;">
+        <div class="card-body text-black">
+            <h4 class="card-title text-black">
+                <a href="/detail/{{quest.id}}" class="text-black">{{quest.title}}</a>
+            </h4>
+            <p>
+                <a href="#" class="mr-2 text-black">{{quest.user.username}}</a>
+                <a href="/detail/{{quest.id}}" class="mr-2 text-black">{{quest.answer_set.count}} Answers</a>
+                <a href="/detail/{{quest.id}}" class="mr-2 text-black">{{quest.total_comments}} Replies</a>
+            </p>
+        </div>
+        <div class="card-footer" style="margin: 2px; padding: 2px;">
+            <small>{{quest.add_time}}</small>
+        </div>
+    </div>
+    {% endfor %}
+
+    
+ <!-- Question List from -- RegularDatabaseSearch -->   
+  
+    {% for questdb in quests_from_db %}
+    <div class="card mb-4 custom-blur" style="margin-top: 0px;">
+        <div class="card-body text-black">
+            <h4 class="card-title text-black">
+                <a href="/detail/{{questdb.id}}" class="text-black">{{questdb.title}}</a>
+            </h4>
+            <p>
+                <a href="#" class="mr-2 text-black">{{questdb.user.username}}</a>
+                <a href="/detail/{{questdb.id}}" class="mr-2 text-black">{{questdb.answer_set.count}} Answers</a>
+                <a href="/detail/{{questdb.id}}" class="mr-2 text-black">{{questdb.total_comments}} Replies</a>
+            </p>
+        </div>
+        <div class="card-footer" style="margin: 2px; padding: 2px;">
+            <small>{{questdb.add_time}}</small>
+        </div>
+    </div>
+    {% endfor %}
+  
+    
+    
+ 
+</div>
+ {% endblock %}

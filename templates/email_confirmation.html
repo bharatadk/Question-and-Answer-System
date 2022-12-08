@@ -1,0 +1,12 @@
+{% autoescape off %}
+
+Hello {{ name }}
+
+Welcome to AskMe 
+
+Please confirm your email by clicking on the following link for login in AskMe .
+
+
+Confirmation Link: http://{{ domain }}{% url 'QnAbase:activate' uidb64=uid token=token %}
+
+{% endautoescape %}
